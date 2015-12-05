@@ -62,14 +62,14 @@
 
 		function drawBackground(){
 			context2d.fillStyle = "#000000";
-			context2d.fillRect(0,0,canvas.width,canvas.height);
+			context2d.fillRect(0,0,viewportWidth,viewportHeight);
 			context2d.stroke();
 		}
 
 		function drawTearingLines(){
 			context2d.fillStyle = "#FF0000";		
-			context2d.fillRect(x-lineWidth,0,lineWidth,canvas.height);
-			context2d.fillRect(x-3*lineWidth,0,lineWidth,canvas.height);
+			context2d.fillRect(x-lineWidth,0,lineWidth,viewportHeight);
+			context2d.fillRect(x-3*lineWidth,0,lineWidth,viewportHeight);
 		}
 
 	</script>
