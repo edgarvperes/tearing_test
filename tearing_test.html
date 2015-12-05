@@ -1,76 +1,77 @@
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
 		<meta charset="UTF-8">
 		<title>Title of the document</title>
 		
-	</head>
-	<body>
-		<canvas id="myCanvas">			
-		</canvas>
+</head>
+<body>
+	<canvas id="myCanvas">			
+	</canvas>
 
-		<script type="text/javascript">
+	<script type="text/javascript">
 
-			var canvas=document.getElementById("myCanvas");
-			var context2d=canvas.getContext("2d");	
-			var viewportHeight = null;
-			var viewportWidth = null;
-			updateViewportSize();
+		var canvas=document.getElementById("myCanvas");
+		var context2d=canvas.getContext("2d");	
+		var viewportHeight = null;
+		var viewportWidth = null;
+		updateViewportSize();
 
-			var lineWidth=viewportWidth*0.01;
-			var lineSpeed=lineWidth*0.015;
-			var x=0;
-			var initialTime=null;
-			var nowTime=null;
+		var lineWidth=viewportWidth*0.01;
+		var lineSpeed=lineWidth*0.015;
+		var x=0;
+		var initialTime=null;
+		var nowTime=null;
+		
+		window.requestAnimationFrame(mainLoop);
+		
+		function mainLoop(timestamp){
+			updateTimeVariables(timestamp);
 			
+			
+			drawBackground();
+			drawTearingLines();
+			x = (lineSpeed*getDeltaTime()) % (viewportWidth+lineWidth*3);
+			
+
 			window.requestAnimationFrame(mainLoop);
-			
-			function mainLoop(timestamp){
-				updateTimeVariables(timestamp);
-				
-				
-				drawBackground();
-				drawTearingLines();
-				x = (lineSpeed*getDeltaTime()) % (viewportWidth+lineWidth*3);
-				
+		}
+		
+		function updateViewportSize(){
+			var windowWidth = window.innerWidth;
+			var windowHeight = window.innerHeight;
+			if(windowWidth!=viewportWidth){
+				viewportWidth = windowWidth;
+				context2d.canvas.width  = viewportWidth;
+			}
+			if(windowHeight!=viewportHeight){
+				viewportHeight = windowHeight;
+				context2d.canvas.height  = viewportHeight;
+			}
+		}
+		
+		function updateTimeVariables(timestamp){
+			if(!initialTime) 
+				initialTime=timestamp;
+			nowTime=timestamp;
+		}
+		
+		function getDeltaTime(){
+			return nowTime-initialTime;
+		}
 
-				window.requestAnimationFrame(mainLoop);
-			}
-			
-			function updateViewportSize(){
-				var windowWidth = window.innerWidth;
-				var windowHeight = window.innerHeight;
-				if(windowWidth!=viewportWidth){
-					viewportWidth = windowWidth;
-					context2d.canvas.width  = viewportWidth;
-				}
-				if(windowHeight!=viewportHeight){
-					viewportHeight = windowHeight;
-					context2d.canvas.height  = viewportHeight;
-				}
-			}
-			
-			function updateTimeVariables(timestamp){
-				if(!initialTime) 
-					initialTime=timestamp;
-				nowTime=timestamp;
-			}
-			
-			function getDeltaTime(){
-				return nowTime-initialTime;
-			}
+		function drawBackground(){
+			context2d.fillStyle = "#000000";
+			context2d.fillRect(0,0,canvas.width,canvas.height);
+			context2d.stroke();
+		}
 
-			function drawBackground(){
-				context2d.fillStyle = "#000000";
-				context2d.fillRect(0,0,canvas.width,canvas.height);
-				context2d.stroke();
-			}
+		function drawTearingLines(){
+			context2d.fillStyle = "#FF0000";		
+			context2d.fillRect(x-lineWidth,0,lineWidth,canvas.height);
+			context2d.fillRect(x-3*lineWidth,0,lineWidth,canvas.height);
+		}
 
-			function drawTearingLines(){
-				context2d.fillStyle = "#FF0000";		
-				context2d.fillRect(x-lineWidth,0,lineWidth,canvas.height);
-				context2d.fillRect(x-3*lineWidth,0,lineWidth,canvas.height);
-			}
-
-		</script>
-	</body>	
+	</script>
+</body>	
+</html>
