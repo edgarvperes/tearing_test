@@ -12,25 +12,23 @@
 
 	<script type="text/javascript">
 
-		var canvas=document.getElementById("myCanvas");
 		var backbufferContext2d = document.createElement("canvas").getContext("2d");
-		var context2d=canvas.getContext("2d");	
+		var context2d=document.getElementById("myCanvas").getContext("2d");	
 		var viewportHeight = null;
 		var viewportWidth = null;
 		var lineWidth=null;
 		var lineSpeed=null;
-		var float_x, x;
+		var linePosition, linePositionInt;
 		var initialTime=null;
 		var nowTime=null;
-
 
 		window.requestAnimationFrame(mainLoop);
 		
 		function mainLoop(timestamp){
 			updateTimeVariables(timestamp);
 			updateViewportSize();
-			float_x = (lineSpeed*getDeltaTime()) % (viewportWidth+lineWidth*3);
-			x=Math.floor(float_x);
+			linePosition = (lineSpeed*getDeltaTime()) % (viewportWidth+lineWidth*3);
+			linePositionInt=Math.floor(linePosition);
 			drawBackground();
 			drawTearingLines();
 			render();
@@ -85,8 +83,8 @@
 
 		function drawTearingLines(){
 			backbufferContext2d.fillStyle = "#FF0000";		
-			backbufferContext2d.fillRect(x-lineWidth,0,lineWidth,viewportHeight);
-			backbufferContext2d.fillRect(x-3*lineWidth,0,lineWidth,viewportHeight);
+			backbufferContext2d.fillRect(linePositionInt-lineWidth,0,lineWidth,viewportHeight);
+			backbufferContext2d.fillRect(linePositionInt-3*lineWidth,0,lineWidth,viewportHeight);
 		}
 
 	</script>
