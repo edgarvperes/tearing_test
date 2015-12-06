@@ -13,6 +13,9 @@
 	</canvas>
 
 	<script type="text/javascript">
+		//CONFIG
+		var enableSubpixelRendering = true; //enable to make the animation smoother. there's a performance hit however.
+		//END CONFIG
 
 		var linesCanvas = document.createElement("canvas");
 		var linesContext = linesCanvas.getContext("2d");
@@ -21,7 +24,7 @@
 		var viewportWidth = null;
 		var lineWidth=null;
 		var lineSpeed=null;
-		var linePosition, linePositionInt;
+		var linePosition, linePositionRender;
 		var initialTime=null;
 		var nowTime=null;
 		var previousTime=null;
@@ -43,9 +46,14 @@
 			updateViewportSize();
 
 			linePosition = ((lineSpeed*getDeltaTime()) % (viewportWidth+linesCanvas.width)) - linesCanvas.width;
-			lastLinePositionInt=linePositionInt;
-			linePositionInt=Math.floor(linePosition);
 
+			if(enableSubpixelRendering){
+				linePositionRender=linePosition;
+			}
+			else{
+				linePositionRender=Math.floor(linePosition);
+			}
+			
 			//do we need to redraw the background?
 			//playing it safe here.
 			if(previousTime && Math.ceil(nowTime-previousTime) >= Math.floor(3*lineWidth/lineSpeed)){
@@ -57,7 +65,7 @@
 		}
 		
 		function render() {
-		  mainContext.drawImage(linesCanvas, linePositionInt, 0);
+		  mainContext.drawImage(linesCanvas, linePositionRender, 0);
 		}
 
 		function updateViewportSize(){
