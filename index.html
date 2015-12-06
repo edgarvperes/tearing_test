@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-		<title>Tearing Test</title>
-		
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+	<title>Tearing Test</title>		
 </head>
+
 <body>
+
 	<canvas id="myCanvas" style="position: fixed; top: 0; left: 0;">			
 	</canvas>
 
@@ -44,9 +46,12 @@
 			lastLinePositionInt=linePositionInt;
 			linePositionInt=Math.floor(linePosition);
 
+			//do we need to redraw the background?
+			//playing it safe here.
 			if(previousTime && Math.ceil(nowTime-previousTime) >= Math.floor(3*lineWidth/lineSpeed)){
 				drawBackground(mainContext);
 			}
+
 			render();
 			window.requestAnimationFrame(mainLoop);
 		}
@@ -107,4 +112,5 @@
 
 	</script>
 </body>	
+
 </html>
