@@ -40,7 +40,7 @@
 			updateTimeVariables(timestamp);
 			updateViewportSize();
 
-			linePosition = ((lineSpeed*getDeltaTime()) % (viewportWidth+lineWidth*6)) - lineWidth*6;
+			linePosition = ((lineSpeed*getDeltaTime()) % (viewportWidth+linesCanvas.width)) - linesCanvas.width;
 			linePositionInt=Math.floor(linePosition);
 			
 			render();
@@ -48,7 +48,7 @@
 		}
 		
 		function render() {
-		  mainContext.drawImage(linesContext.canvas, linePositionInt, 0);
+		  mainContext.drawImage(linesCanvas, linePositionInt, 0);
 		}
 
 		function updateViewportSize(){
