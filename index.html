@@ -13,10 +13,6 @@
 	</canvas>
 
 	<script type="text/javascript">
-		//CONFIG
-		var smoothMotion = true;
-		//ENDCONFIG
-
 
 		var linesCanvas = document.createElement("canvas");
 		var linesContext = linesCanvas.getContext("2d");
@@ -87,11 +83,6 @@
 		function onViewportSizeChanged(){
 			lineWidth=Math.floor(viewportWidth*0.01);
 			lineSpeed=lineWidth*0.015;
-			if(smoothMotion){
-				lineSpeed = Math.floor(lineSpeed);
-				if(lineSpeed < 1)
-					lineSpeed = 1;
-			}
 			createLinesContext();
 			drawBackground(mainContext);
 		}
