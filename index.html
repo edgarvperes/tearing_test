@@ -41,8 +41,12 @@
 			updateViewportSize();
 
 			linePosition = ((lineSpeed*getDeltaTime()) % (viewportWidth+linesCanvas.width)) - linesCanvas.width;
+			lastLinePositionInt=linePositionInt;
 			linePositionInt=Math.floor(linePosition);
-			
+			if((linePositionInt-lastLinePositionInt > linesCanvas.width) 
+				|| (lastLinePositionInt>linePositionInt && lastLinePositionInt<viewportWidth-linesCanvas.width/2)){
+				drawBackground(mainContext);
+			}
 			render();
 			window.requestAnimationFrame(mainLoop);
 		}
