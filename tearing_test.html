@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+		<title>Tearing Test</title>
+		
+</head>
+<body>
+	<canvas id="myCanvas" style="position: fixed; top: 0; left: 0;">			
+	</canvas>
+
+	<script type="text/javascript">
+
+		var linesCanvas = document.createElement("canvas");
+		var linesContext = linesCanvas.getContext("2d");
+		var mainContext=document.getElementById("myCanvas").getContext("2d");	
+		var viewportHeight = null;
+		var viewportWidth = null;
+		var lineWidth=null;
+		var lineSpeed=null;
+		var linePosition, linePositionInt;
+		var initialTime=null;
+		var nowTime=null;
+		
+		
+
+		window.requestAnimationFrame(mainLoop);
+
+		function createLinesContext(){
+			
+			linesCanvas.width = lineWidth*6;
+			linesCanvas.height = viewportHeight;
+			
+			drawBackground(linesContext);
+			drawTearingLines(linesContext);
+		}
+
+		function mainLoop(timestamp){
+			updateTimeVariables(timestamp);
+			updateViewportSize();
+
+			linePosition = ((lineSpeed*getDeltaTime()) % (viewportWidth+linesCanvas.width)) - linesCanvas.width;
+			lastLinePositionInt=linePositionInt;
+			linePositionInt=Math.floor(linePosition);
+			if((linePositionInt-lastLinePositionInt > linesCanvas.width) 
+				|| (lastLinePositionInt>linePositionInt && lastLinePositionInt<viewportWidth-linesCanvas.width/2)){
+				drawBackground(mainContext);
+			}
+			render();
+			window.requestAnimationFrame(mainLoop);
+		}
+		
+		function render() {
+		  mainContext.drawImage(linesCanvas, linePositionInt, 0);
+		}
+
+		function updateViewportSize(){
+			var windowWidth = window.innerWidth;
+			var windowHeight = window.innerHeight;
+			var changed=false;
+			if(windowWidth!=viewportWidth){
+				viewportWidth = windowWidth;
+				mainContext.canvas.width  = viewportWidth;
+				changed=true;
+			}
+			if(windowHeight!=viewportHeight){
+				viewportHeight = windowHeight;
+				mainContext.canvas.height  = viewportHeight;
+				changed=true;
+			}
+			if(changed){
+				console.log("ViewportSizeChanged")
+				onViewportSizeChanged();
+			}
+		}
+		
+		function onViewportSizeChanged(){
+			lineWidth=Math.floor(viewportWidth*0.01);
+			lineSpeed=lineWidth*0.015;
+			createLinesContext();
+			drawBackground(mainContext);
+		}
+
+		function updateTimeVariables(timestamp){
+			if(!initialTime) 
+				initialTime=timestamp;
+			nowTime=timestamp;
+		}
+		
+		function getDeltaTime(){
+			return nowTime-initialTime;
+		}
+
+		function drawBackground(context2d){
+			context2d.fillStyle = "#000000";
+			context2d.fillRect(0,0,context2d.canvas.width,context2d.canvas.height);
+		}
+
+		function drawTearingLines(context2d){
+			context2d.fillStyle = "#FF0000";		
+			context2d.fillRect(lineWidth*3,0,lineWidth,context2d.canvas.height);
+			context2d.fillRect(lineWidth*5,0,lineWidth,context2d.canvas.height);
+		}
+
+	</script>
+</body>	
+</html>
