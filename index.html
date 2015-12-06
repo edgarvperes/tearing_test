@@ -22,7 +22,7 @@
 		var linePosition, linePositionInt;
 		var initialTime=null;
 		var nowTime=null;
-		
+		var previousTime=null;
 		
 
 		window.requestAnimationFrame(mainLoop);
@@ -43,8 +43,8 @@
 			linePosition = ((lineSpeed*getDeltaTime()) % (viewportWidth+linesCanvas.width)) - linesCanvas.width;
 			lastLinePositionInt=linePositionInt;
 			linePositionInt=Math.floor(linePosition);
-			if((linePositionInt-lastLinePositionInt > linesCanvas.width) 
-				|| (lastLinePositionInt>linePositionInt && lastLinePositionInt<viewportWidth-linesCanvas.width/2)){
+
+			if(previousTime && Math.ceil(nowTime-previousTime) >= Math.floor(3*lineWidth/lineSpeed)){
 				drawBackground(mainContext);
 			}
 			render();
@@ -83,6 +83,8 @@
 		}
 
 		function updateTimeVariables(timestamp){
+			previousTime=nowTime;
+
 			if(!initialTime) 
 				initialTime=timestamp;
 			nowTime=timestamp;
