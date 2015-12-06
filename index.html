@@ -54,7 +54,7 @@
 				linePositionRender=Math.floor(linePosition);
 			}
 			
-			//do we need to redraw the background?
+			//check whether we need to redraw the background
 			//playing it safe here.
 			if(previousTime && Math.ceil(nowTime-previousTime) >= Math.floor(3*lineWidth/lineSpeed)){
 				drawBackground(mainContext);
